@@ -686,6 +686,7 @@ class MechBody:
     def setCommand(self,in_world_velocity,in_rotation_vel):
         #find if the direction integer has changed
         vec = in_world_velocity#*self.world_mech_rotate
+        #print(vec)
         if abs(in_rotation_vel) < 0.000000001:
             in_rotation_vel = 0.0
 

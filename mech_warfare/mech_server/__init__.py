@@ -3,6 +3,6 @@ import legClassV4
 import linearEquation
 import mechMatrix
 import MechServerConstants
-import testMechServer
+import RotationalMath
 
-__all__ = ["angle", "legClassV4", "linearEquation", "mechMatrix", "MechServerConstants", "testMechServer"]
+__all__ = ["angle", "legClassV4", "linearEquation", "mechMatrix", "MechServerConstants", "RotationalMath"]

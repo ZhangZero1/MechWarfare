@@ -19,12 +19,12 @@ def makeTranslationMatrix(xTrans, yTrans):
             [
                 [1,0, xTrans],
                 [0,1, yTrans],
-                [0,1, 1]
+                [0,0, 1]
             ]
         )
     )
 
-def makeRotationMatrix(rotate):
+def makeRotationMatrix(rotate): # CCW, transpose for CW
 
     """
     produces a rotation matrix that can rotate(from tail, <0,0>) an applied vector CW by the
@@ -49,8 +49,24 @@ def makeRotationMatrix(rotate):
         ]
     )
 
+def transformVector(vec, matrixList):
+    
+    """
+    transforms the given vector by the given sequence of transformation matricies
 
+    Parameters
+    ----------
+    vec : Vector <x,y,h> homogenious coordinates
+        the input vector to transform 
+    matrixList : List <Matrix{3x3} homogenious transformation matrix>
+        the list of 3x3 transformation matricies to perform on sequence on the given vector
+    """
 
+    if(len(matrixList) == 0):
+        return vec
+    resultMatrix = vec*matrixList[0]
+    resultVector = np.array(resultMatrix)[0]
 
+    return transformVector(resultVector, matrixList[1:])
 
 

@@ -26,7 +26,7 @@ class MechLeg:
 
     def __init__(self,in_pixels_unit,in_max_range,in_angular_sweep,mech_leg_trans,mech_leg_rot,in_stand_pos,in_min_range=0):
 
-        self.mech_to_leg = mech_leg_trans*mech_leg_rot 
+        self.mech_to_leg = mech_leg_trans*mech_leg_rot
         self.leg_to_mech = np.linalg.inv(mech_leg_rot)*np.linalg.inv(mech_leg_trans)
 
         self.pixels_per_u = in_pixels_unit
@@ -79,18 +79,19 @@ class MechLeg:
     
     def setTargetExtend(self,in_direction,in_speed):
         """
-        Sets a new target and speed to reach the target by specifying how far
-        to move in what direction to reach the target
+        Sets a new target and speed to reach the target by specifying a direction for the leg
+        to move towards
 
         Parmaters:
         ----------
         in_direction: vector <x,y,h> homogenious coordinates
-            a vector of how far to move the current location to reach the target
+            a vector of the direction move from the current position towards
             given in mech coordinate space
         in_speeed: float
             represents how fast the leg needs to move to reach this point
 
         """
+        
         self.speed = in_speed
         self.target = self.position+(in_direction*self.mech_to_leg)
         self.radSpeed = 0.0
@@ -105,14 +106,42 @@ class MechLeg:
         in_angle: Angle
             an angle for how much to rotate around the pivot for
         in_radspeed: float
-            gives how fast the rotation must occur
+            gives how fast the rotation must occur directionless (should not be negative, will only take account magnitude)
         in_pivot: vector<x,y,h> homogenious coordinates
             gives the position of the pivot to rotate along
-            (leg coordinate space???)
+            in mech coordinate space
         """
 
-        #COMPLETED: offload direction data to rad_speed variable
-        pass
+        #COMPLETED: keep angle non-negative. Use sign in radspeed to keep track of rotation direction (CW/CCW)
+        if(in_angle > 0.0):
+            self.radspeed = abs(in_radspeed)
+        elif(in_angle < 0.0):
+            self.radspeed = -1 * abs(in_radspeed)
+        else:
+            self.radspeed = 0.0
+
+        #COMPLETED: setup radius of rotation the position will rotate along pivot
+        self.pivot_pos = in_pivot * self.mech_to_leg
+
+        rotation_radius = RotationalMath.Radius(pivot_pos, self.position)
+
+        rot_speed = RotationalMath.RotationalMeasurement(in_radspeed, True, rotation_radius)
+        lin_speed = rot_speed.convertTo(False)
+
+        self.speed = abs( lin_speed.getValue() )
+
+
+
+
+
+
+
+               
+
+        
+
+
+
 
 
 

@@ -17,13 +17,39 @@ class Test_MechMatrix(unittest.TestCase):
         yShift = 2
 
         expectedVector = self.horizontalVector + np.array([xShift, yShift, 0])
-        actualVector = self.horizontalVector * mechMatrix.makeTranslationMatrix(xTrans=xShift, yTrans=yShift) 
-        
+        actualVector = self.horizontalVector * mechMatrix.makeTranslationMatrix(xTrans=xShift, yTrans=yShift)
+        actualVector = np.array(actualVector)[0]
 
-        self.assertEqual(expectedVector, actualVector)
+        self.assertTrue(np.array_equal(expectedVector, actualVector))
+
+    def test_makeRotationMatrix(self):
+        rotation = math.pi/2.0
+
+        expectedVector = self.horizontalVector
+
+        actualVector = self.verticalVector * mechMatrix.makeRotationMatrix(rotate=rotation)
+        actualVector = np.array(actualVector)[0]
+
+        self.assertTrue(np.allclose(expectedVector, actualVector))
+
+    def test_transformVector(self):
+        translation = mechMatrix.makeTranslationMatrix(xTrans=0, yTrans=3)
+        rotation = mechMatrix.makeRotationMatrix(rotate=math.pi/2.0)
+
+        actualVector = mechMatrix.transformVector(self.verticalVector,
+                                                  [translation, rotation])
+
+        expectedVector = np.array([8, 0, 1])
+
+        self.assertTrue(np.allclose(expectedVector, actualVector))
+
+
+
+
 
 
 def __perform_test__():
+        """
 	x = np.array([0,0,1])
 	y = mechMatrix.makeTranslationMatrix(xTrans=5,yTrans=5)
 	 
@@ -49,6 +75,8 @@ def __perform_test__():
 	print(d)
 	print("we end up at")
 	print(res)
+
+        """
 
         suite = unittest.TestLoader().loadTestsFromTestCase(Test_MechMatrix)
         unittest.TextTestRunner(verbosity=2).run(suite)
