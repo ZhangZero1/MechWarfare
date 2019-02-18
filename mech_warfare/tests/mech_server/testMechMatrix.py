@@ -27,14 +27,21 @@ class Test_MechMatrix(unittest.TestCase):
 
         expectedVector = self.horizontalVector
 
-        actualVector = self.verticalVector * mechMatrix.makeRotationMatrix(rotate=rotation)
+        actualVector = self.verticalVector * mechMatrix.makeRotationMatrix(rotate=rotation, isClockwise=False)
+        actualVector = np.array(actualVector)[0]
+
+        self.assertTrue(np.allclose(expectedVector, actualVector))
+
+        expectedVector = self.verticalVector
+
+        actualVector = self.horizontalVector * mechMatrix.makeRotationMatrix(rotate=rotation, isClockwise=True)
         actualVector = np.array(actualVector)[0]
 
         self.assertTrue(np.allclose(expectedVector, actualVector))
 
     def test_transformVector(self):
         translation = mechMatrix.makeTranslationMatrix(xTrans=0, yTrans=3)
-        rotation = mechMatrix.makeRotationMatrix(rotate=math.pi/2.0)
+        rotation = mechMatrix.makeRotationMatrix(rotate=math.pi/2.0, isClockwise=False)
 
         actualVector = mechMatrix.transformVector(self.verticalVector,
                                                   [translation, rotation])

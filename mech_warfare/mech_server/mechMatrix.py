@@ -24,16 +24,18 @@ def makeTranslationMatrix(xTrans, yTrans):
         )
     )
 
-def makeRotationMatrix(rotate): # CCW, transpose for CW
+def makeRotationMatrix(rotate, isClockwise=False): # CCW, transpose for CW
 
     """
-    produces a rotation matrix that can rotate(from tail, <0,0>) an applied vector CW by the
-    given amount in radians
+    produces a rotation matrix that can rotate(from tail, <0,0>) an applied vector by the
+    given amount in radians in the given direction
 
     Parameters
     ----------
     rotate : float
         the radians for how much the rotation matrix should rotate by
+    isClockwise: boolean (default: True)
+        is the rotation matrix turning clockwise
 
 
     """
@@ -41,13 +43,18 @@ def makeRotationMatrix(rotate): # CCW, transpose for CW
     cose = math.cos(rotate)
     sine = math.sin(rotate)
 
-    return np.matrix(
+    counter_clockwise_mat = np.matrix(
         [
             [cose, -sine, 0],
             [sine,  cose, 0],
             [   0,     0, 1],
         ]
     )
+
+    if(isClockwise):
+        return np.transpose(counter_clockwise_mat)
+    else:
+        return counter_clockwise_mat
 
 def transformVector(vec, matrixList):
     
