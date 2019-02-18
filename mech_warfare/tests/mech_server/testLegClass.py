@@ -45,6 +45,24 @@ class Test_LegClass(unittest.TestCase):
 
         self.assertTrue(np.allclose(test_leg.target, expectedLeg))
 
+    def test_setTargetAngleExtend(self):
+        test_leg = copy.deepcopy(self.leg1)
+
+        pivot = np.array([4, 4, 1])
+
+        test_leg.setTargetAngleExtend(math.pi, 3, pivot)
+        expectedLeg = np.array([0, -2*math.sqrt(2), 1])
+
+        self.assertTrue(np.allclose(test_leg.target, expectedLeg))
+
+        test_leg = copy.deepcopy(self.leg1)
+
+        test_leg.setTargetAngleExtend(math.pi/2.0, 3, pivot)
+        expectedLeg = np.array([-math.sqrt(2), -math.sqrt(2), 1])
+
+        self.assertTrue(np.allclose(test_leg.target, expectedLeg))
+
+
 
         
 

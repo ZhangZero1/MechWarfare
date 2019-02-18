@@ -10,6 +10,9 @@ import numpy as np
 #general math
 import math
 
+import mechMatrix
+import RotationalMath
+
 #class MechLegMethod:
 
 class MechLegVector:
@@ -86,7 +89,7 @@ class MechLeg:
         ----------
         in_direction: vector <x,y,h> homogenious coordinates
             a vector of the direction move from the current position towards
-            given in mech coordinate space
+            given in mech coordinate space (h=0)
         in_speeed: float
             represents how fast the leg needs to move to reach this point
 
@@ -104,12 +107,12 @@ class MechLeg:
         Parmaters:
         ----------
         in_angle: Angle
-            an angle for how much to rotate around the pivot for
+            an angle for how much to rotate around the pivot in counter clockwise
         in_radspeed: float
             gives how fast the rotation must occur directionless (should not be negative, will only take account magnitude)
         in_pivot: vector<x,y,h> homogenious coordinates
             gives the position of the pivot to rotate along
-            in mech coordinate space
+            in mech coordinate space (h=1)
         """
 
         #COMPLETED: keep angle non-negative. Use sign in radspeed to keep track of rotation direction (CW/CCW)
@@ -123,12 +126,14 @@ class MechLeg:
         #COMPLETED: setup radius of rotation the position will rotate along pivot
         self.pivot_pos = in_pivot * self.mech_to_leg
 
-        rotation_radius = RotationalMath.Radius(pivot_pos, self.position)
+        rotation_radius = RotationalMath.Radius(self.pivot_pos, self.position)
 
         rot_speed = RotationalMath.RotationalMeasurement(in_radspeed, True, rotation_radius)
         lin_speed = rot_speed.convertTo(False)
 
         self.speed = abs( lin_speed.getValue() )
+
+        self.target = self.pivot_pos + rotation_radius.getVector() * mechMatrix.makeRotationMatrix(in_angle, True)
 
 
 

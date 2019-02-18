@@ -44,9 +44,6 @@ class Test_Radius(unittest.TestCase):
         r2 = RotationalMath.Radius(piv, pos2)
 
 
-        print(r1.getValue())
-        print(r2.getValue())
-
         verify( r1.getValue(), 5 * math.sqrt(2)  )  # gives back a relative distance, h=0
         verify( r2.getValue(), math.sqrt(2**2 + 3**2)  )
 

@@ -24,7 +24,7 @@ def makeTranslationMatrix(xTrans, yTrans):
         )
     )
 
-def makeRotationMatrix(rotate, isClockwise=False): # CCW, transpose for CW
+def makeRotationMatrix(rotate, isClockwise=False): # verify h=0 vs h=1 case
 
     """
     produces a rotation matrix that can rotate(from tail, <0,0>) an applied vector by the
