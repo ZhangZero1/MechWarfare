@@ -107,7 +107,7 @@ class MechLeg:
         Parmaters:
         ----------
         in_angle: Angle
-            an angle for how much to rotate around the pivot in counter clockwise
+            an angle for how much to rotate around the pivot in clockwise
         in_radspeed: float
             gives how fast the rotation must occur directionless (should not be negative, will only take account magnitude)
         in_pivot: vector<x,y,h> homogenious coordinates
@@ -135,23 +135,9 @@ class MechLeg:
 
         self.target = self.pivot_pos + rotation_radius.getVector() * mechMatrix.makeRotationMatrix(in_angle, True)
 
-
-
-
-
-
-
-               
-
-        
-
-
-
-
-
-
-
-    
-
-
+def specialProjectExtend(self, in_direction, in_speed, extend_dist):
+    """
+    sets the target as the (projected position) offset along the given direction along a given distance
+    that is to say set the target as the current location projected on the direction we want then exteneded some distnace along that direction
+    """
 

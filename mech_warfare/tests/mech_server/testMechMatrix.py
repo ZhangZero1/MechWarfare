@@ -22,7 +22,7 @@ class Test_MechMatrix(unittest.TestCase):
 
         self.assertTrue(np.array_equal(expectedVector, actualVector))
 
-    def test_makeRotationMatrix(self):
+    def test_makeRotationMatrix_absolute(self):
         rotation = math.pi/2.0
 
         expectedVector = self.horizontalVector
@@ -39,6 +39,16 @@ class Test_MechMatrix(unittest.TestCase):
 
         self.assertTrue(np.allclose(expectedVector, actualVector))
 
+    def test_makeRotationMatrix_relative(self):
+        rotation = math.pi/2.0
+
+        expectedVector = self.horizontalVector - np.array([0, 0, 1])
+
+        actualVector = (self.verticalVector - np.array([0, 0, 1])) * mechMatrix.makeRotationMatrix(rotate=rotation, isClockwise=False)
+        actualVector = np.array(actualVector)[0]
+
+        self.assertTrue(np.allclose(expectedVector, actualVector))
+
     def test_transformVector(self):
         translation = mechMatrix.makeTranslationMatrix(xTrans=0, yTrans=3)
         rotation = mechMatrix.makeRotationMatrix(rotate=math.pi/2.0, isClockwise=False)
@@ -49,6 +59,23 @@ class Test_MechMatrix(unittest.TestCase):
         expectedVector = np.array([8, 0, 1])
 
         self.assertTrue(np.allclose(expectedVector, actualVector))
+
+    def test_projectVectorOnto(self):
+        vec_src = np.array([0, 10, 0])
+        vec_dest = np.array([10, 0, 0])
+
+        actual_vec = mechMatrix.projectVectorOnto(vec_src, vec_dest)
+        expected_vec = np.array([0, 0, 0])
+
+        self.assertTrue(np.array_equal(actual_vec, expected_vec))
+
+        vec_src = np.array([5, 5, 0])
+        vec_dest = np.array([10, 0, 0])
+
+        actual_vec = mechMatrix.projectVectorOnto(vec_src, vec_dest)
+        expected_vec = np.array([5, 0, 0])
+
+        self.assertTrue(np.allclose(actual_vec, expected_vec))
 
 
 
