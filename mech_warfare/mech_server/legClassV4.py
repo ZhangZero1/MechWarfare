@@ -135,9 +135,44 @@ class MechLeg:
 
         self.target = self.pivot_pos + rotation_radius.getVector() * mechMatrix.makeRotationMatrix(in_angle, True)
 
-def specialProjectExtend(self, in_direction, in_speed, extend_dist):
-    """
-    sets the target as the (projected position) offset along the given direction along a given distance
-    that is to say set the target as the current location projected on the direction we want then exteneded some distnace along that direction
-    """
+    def specialProjectExtend(self, in_direction, in_speed, extend_dist):
+        """
+        sets the target as the (projected position) offset along the given direction along a given distance
+        that is to say set the target as the current location projected on the direction we want then exteneded some distnace along that direction
 
+        Parameters:
+        -----------
+        in_direction : vector <x,y,h> homogenious coordinates (h=0)
+            the direction to project the current position onto and extend along
+            in leg coordinate space
+        in_speed: numeric
+            the speed to get there in
+        extend_dist: numeric
+            after projection how far to extend along that direction
+        """
+        self.speed = in_speed
+        self.radSpeed = 0.0
+
+        #projects the current position-stand line into the given direction
+        position_of_leg = self.position - self.stand_pos
+        project_pos = self.stand_pos + mechMatrix.projectVectorOnto(position_of_leg, in_direction)
+
+        #determines the vector for how much further along the given direction the projection is extended
+        direction_unit_vector = in_direction/np.linalg.norm(in_direction)
+        extension = direction_unit_vector * extend_dist
+
+        self.target = project_pos + extension
+
+
+    def goMechtoLeg(self,in_vector):
+        return in_vector*self.mech_to_leg
+
+    def goLegtoMech(self,in_vector):
+        return in_vector*self.leg_to_mech
+
+
+
+
+
+
+    

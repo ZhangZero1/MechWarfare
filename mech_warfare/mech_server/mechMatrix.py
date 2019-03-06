@@ -141,7 +141,7 @@ def _unoptimized_projectVectorOnto(vec_src, vec_dest):
 
     dest_unit_vector = vec_dest/np.linalg.norm(vec_dest)
 
-    projected_magnitude = np.linalg.norm(vec_src) * cos(theta)
+    projected_magnitude = np.linalg.norm(vec_src) * math.cos(theta)
 
     return dest_unit_vector * projected_magnitude
 

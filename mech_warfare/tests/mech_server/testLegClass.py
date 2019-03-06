@@ -62,6 +62,20 @@ class Test_LegClass(unittest.TestCase):
 
         self.assertTrue(np.allclose(test_leg.target, expectedLeg))
 
+    def test_specialProjectExtend(self):
+        test_leg = copy.deepcopy(self.leg1)
+        test_leg.position = np.array([5, 5, 1])
+
+        new_dir = np.array([3, 0,0])
+
+        test_leg.specialProjectExtend(new_dir, 0, 2)
+
+        expectedLeg = np.array([7, 0, 1])
+        actualLeg = test_leg.target
+        
+        self.assertTrue(np.allclose(expectedLeg, actualLeg))
+
+
 
 
         

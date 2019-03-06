@@ -60,6 +60,32 @@ class Test_MechMatrix(unittest.TestCase):
 
         self.assertTrue(np.allclose(expectedVector, actualVector))
 
+    def test_getAngleBetween(self):
+        vec1 = np.array([0, 10, 0])
+        vec2 = np.array([10, 0, 0])
+
+        actual_res = mechMatrix.getAngleBetween(vec1, vec2)
+        expected_res = math.pi/2
+
+        self.assertTrue(np.allclose(actual_res, expected_res))
+
+    def test_private_unoptimized_projectVectorOnto(self):
+        vec_src = np.array([0, 10, 0])
+        vec_dest = np.array([10, 0, 0])
+
+        actual_vec = mechMatrix._unoptimized_projectVectorOnto(vec_src, vec_dest)
+        expected_vec = np.array([0, 0, 0])
+
+        self.assertTrue(np.allclose(actual_vec, expected_vec))
+
+        vec_src = np.array([5, 5, 0])
+        vec_dest = np.array([10, 0, 0])
+
+        actual_vec = mechMatrix._unoptimized_projectVectorOnto(vec_src, vec_dest)
+        expected_vec = np.array([5, 0, 0])
+
+        self.assertTrue(np.allclose(actual_vec, expected_vec))
+
     def test_projectVectorOnto(self):
         vec_src = np.array([0, 10, 0])
         vec_dest = np.array([10, 0, 0])
@@ -76,6 +102,15 @@ class Test_MechMatrix(unittest.TestCase):
         expected_vec = np.array([5, 0, 0])
 
         self.assertTrue(np.allclose(actual_vec, expected_vec))
+
+    def test_projectVectorOnto_optimized_unoptimized_consistency(self):
+        vec_src = np.array([0, 10, 0])
+        vec_dest = np.array([10, 0, 0])
+
+        unoptimized = mechMatrix._unoptimized_projectVectorOnto(vec_src, vec_dest)
+        optimized = mechMatrix.projectVectorOnto(vec_src, vec_dest)
+
+        self.assertTrue(np.allclose(unoptimized, optimized))
 
 
 
